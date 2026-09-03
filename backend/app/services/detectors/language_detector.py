@@ -1,6 +1,3 @@
-from pathlib import Path
-
-
 class LanguageDetector:
 
     LANGUAGE_EXTENSIONS = {
@@ -20,14 +17,11 @@ class LanguageDetector:
     }
 
     @classmethod
-    def detect(cls, path: Path):
+    def detect(cls, index):
 
         languages = {}
 
-        for file in path.rglob("*"):
-
-            if not file.is_file():
-                continue
+        for file in index["files"]:
 
             extension = file.suffix.lower()
 

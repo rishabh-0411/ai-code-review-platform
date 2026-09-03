@@ -1,16 +1,25 @@
-from pathlib import Path
-
-
 class FrameworkDetector:
 
+    @staticmethod
+    def _find_file(index, filename):
+
+        return next(
+            (
+                file
+                for file in index["files"]
+                if file.name == filename
+            ),
+            None,
+        )
+
     @classmethod
-    def detect(cls, path: Path):
+    def detect(cls, index):
 
         frameworks = []
 
-        requirements = path / "requirements.txt"
+        requirements = cls._find_file(index, "requirements.txt")
 
-        if requirements.exists():
+        if requirements:
 
             content = requirements.read_text(
                 encoding="utf-8",
@@ -26,24 +35,24 @@ class FrameworkDetector:
             if "flask" in content:
                 frameworks.append("Flask")
 
-        package_json = path / "package.json"
+        package_json = cls._find_file(index, "package.json")
 
-        if package_json.exists():
+        if package_json:
 
             content = package_json.read_text(
                 encoding="utf-8",
                 errors="ignore",
             ).lower()
 
-            if "\"react\"" in content:
+            if '"react"' in content:
                 frameworks.append("React")
 
-            if "\"next\"" in content:
+            if '"next"' in content:
                 frameworks.append("Next.js")
 
-        pom = path / "pom.xml"
+        pom = cls._find_file(index, "pom.xml")
 
-        if pom.exists():
+        if pom:
 
             content = pom.read_text(
                 encoding="utf-8",

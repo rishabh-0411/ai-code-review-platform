@@ -1,18 +1,15 @@
-from pathlib import Path
-
-
 class DockerDetector:
 
     @classmethod
-    def detect(cls, path: Path):
+    def detect(cls, index):
 
-        docker_files = [
+        docker_files = {
             "Dockerfile",
             "docker-compose.yml",
             "docker-compose.yaml",
-        ]
+        }
 
         return any(
-            (path / file).exists()
-            for file in docker_files
+            file.name in docker_files
+            for file in index["files"]
         )

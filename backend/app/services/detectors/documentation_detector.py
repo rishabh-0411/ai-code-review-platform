@@ -1,13 +1,12 @@
-from pathlib import Path
-
-
 class DocumentationDetector:
 
     @classmethod
-    def detect(cls, path: Path):
+    def detect(cls, index):
+
+        names = {file.name for file in index["files"]}
 
         return {
-            "readme": (path / "README.md").exists(),
-            "license": (path / "LICENSE").exists(),
-            "contributing": (path / "CONTRIBUTING.md").exists(),
+            "readme": "README.md" in names,
+            "license": "LICENSE" in names,
+            "contributing": "CONTRIBUTING.md" in names,
         }

@@ -1,29 +1,34 @@
-from pathlib import Path
-
-
 class PackageDetector:
 
+    @staticmethod
+    def _exists(index, filename):
+
+        return any(
+            file.name == filename
+            for file in index["files"]
+        )
+
     @classmethod
-    def detect(cls, path: Path):
+    def detect(cls, index):
 
-        package_managers = []
+        managers = []
 
-        if (path / "requirements.txt").exists():
-            package_managers.append("pip")
+        if cls._exists(index, "requirements.txt"):
+            managers.append("pip")
 
-        if (path / "pyproject.toml").exists():
-            package_managers.append("poetry")
+        if cls._exists(index, "pyproject.toml"):
+            managers.append("poetry")
 
-        if (path / "package.json").exists():
-            package_managers.append("npm")
+        if cls._exists(index, "package.json"):
+            managers.append("npm")
 
-        if (path / "pnpm-lock.yaml").exists():
-            package_managers.append("pnpm")
+        if cls._exists(index, "pnpm-lock.yaml"):
+            managers.append("pnpm")
 
-        if (path / "pom.xml").exists():
-            package_managers.append("Maven")
+        if cls._exists(index, "pom.xml"):
+            managers.append("Maven")
 
-        if (path / "build.gradle").exists():
-            package_managers.append("Gradle")
+        if cls._exists(index, "build.gradle"):
+            managers.append("Gradle")
 
-        return package_managers
+        return managers
