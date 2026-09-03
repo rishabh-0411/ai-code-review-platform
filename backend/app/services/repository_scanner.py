@@ -1,7 +1,9 @@
 from pathlib import Path
 from app.services.detectors.language_detector import LanguageDetector
 from app.services.detectors.framework_detector import FrameworkDetector
-
+from app.services.detectors.package_detector import PackageDetector
+from app.services.detectors.docker_detector import DockerDetector
+from app.services.detectors.documentation_detector import DocumentationDetector
 
 class RepositoryScanner:
 
@@ -27,10 +29,13 @@ class RepositoryScanner:
         path = Path(repository_path)
 
         return {
-            "files": cls.count_files(path),
-            "directories": cls.count_directories(path),
-            "languages": LanguageDetector.detect(path),
-            "frameworks": FrameworkDetector.detect(path),
+        "files": cls.count_files(path),
+        "directories": cls.count_directories(path),
+        "languages": LanguageDetector.detect(path),
+        "frameworks": FrameworkDetector.detect(path),
+        "package_managers": PackageDetector.detect(path),
+        "docker": DockerDetector.detect(path),
+        "documentation": DocumentationDetector.detect(path),
         }
 
     @classmethod
