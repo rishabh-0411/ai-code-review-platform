@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Any
 
 
 class RepositoryIndexer:
@@ -16,7 +17,7 @@ class RepositoryIndexer:
     }
 
     @classmethod
-    def build_index(cls, repository_path: str):
+    def build_index(cls, repository_path: str) -> dict[str, Any]:
 
         root = Path(repository_path)
 
