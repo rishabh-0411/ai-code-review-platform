@@ -14,6 +14,8 @@ class ReviewIssue(BaseModel):
     category: str
     severity: str
     description: str
+    file: str | None = None
+    line: int | None = None
 
 
 class ReviewResponse(BaseModel):

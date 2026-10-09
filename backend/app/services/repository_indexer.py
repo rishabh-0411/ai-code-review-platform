@@ -13,7 +13,6 @@ class RepositoryIndexer:
         ".vscode",
         "build",
         "dist",
-        "temp"
     }
 
     @classmethod
@@ -26,14 +25,24 @@ class RepositoryIndexer:
 
         for item in root.rglob("*"):
 
-            if any(part in cls.IGNORE_DIRECTORIES for part in item.parts):
+            # Only check the path relative to the repository root
+            relative_parts = item.relative_to(root).parts
+
+            if any(part in cls.IGNORE_DIRECTORIES for part in relative_parts):
                 continue
 
             if item.is_dir():
                 directories.append(item)
             else:
                 files.append(item)
+        print("\n========== INDEXER ==========")
+        print("Files:", len(files))
+        print("Directories:", len(directories))
 
+        for file in files[:20]:
+            print(file)
+
+        print("=============================\n")
         return {
             "root": root,
             "files": files,
